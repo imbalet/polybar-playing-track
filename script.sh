@@ -5,14 +5,14 @@ set -euo pipefail
 
 export LC_ALL=C.UTF-8
 
-readonly LENGTH=35
-readonly SLEEP_ON_START=0.5
-readonly SLEEP_ON_SCROLL=0.15
+readonly LENGTH=${LENGTH:-30}
+readonly SLEEP_ON_START=${SLEEP_ON_START:-0.5}
+readonly SLEEP_ON_SCROLL=${SLEEP_ON_SCROLL:-0.15}
 
-readonly PLAY_ICON="▶"
-readonly PAUSE_ICON="‖"
-readonly NEXT_ICON="»"
-readonly PREV_ICON="«"
+readonly PLAY_ICON=${PLAY_ICON:-"▶"}
+readonly PAUSE_ICON=${PAUSE_ICON:-"‖"}
+readonly NEXT_ICON=${NEXT_ICON:-"»"}
+readonly PREV_ICON=${PREV_ICON:-"«"}
 
 cursorPosition=0
 trackText=''
@@ -80,7 +80,7 @@ do
     prev="%{A:playerctl previous:}$PREV_ICON%{A}"
     next="%{A:playerctl next:}$NEXT_ICON%{A}"
 
-    echo "$scrolledText $prev $middleIcon $next"
+    echo "$scrolledText | $prev $middleIcon $next"
 
     sleep $SLEEP_ON_SCROLL
 done
