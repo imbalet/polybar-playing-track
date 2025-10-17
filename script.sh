@@ -14,14 +14,14 @@ readonly PAUSE_ICON=${PAUSE_ICON:-"‖"}
 readonly NEXT_ICON=${NEXT_ICON:-"»"}
 readonly PREV_ICON=${PREV_ICON:-"«"}
 
-cursorPosition=0
-trackText=''
+cursor_position=0
+track_text=''
 
-getTrackName() {
+get_track_name() {
     playerctl metadata --format '{{ artist }} - {{ title }}'
 }
 
-getPlayerStatus() {
+get_player_status() {
     playerctl status
 }
 
@@ -39,8 +39,8 @@ pad_string() {
 scroll() {
     local text="$1"
     local out_var="$2"
-    local textLength=${#text} 
-    if (( textLength <= LENGTH )); then
+    local text_length=${#text} 
+    if (( text_length <= LENGTH )); then
         printf -v "$out_var" "%s" "$(pad_string "$text" $LENGTH)"
         return 0
     fi
@@ -48,10 +48,10 @@ scroll() {
     local padded="$text$padding"
     local paddedLength=${#padded} 
     local doubled="$padded$padded"   
-    local result=${doubled:cursorPosition:LENGTH}
-    ((cursorPosition = cursorPosition + 1))
-    if (( cursorPosition >= paddedLength )); then
-        cursorPosition=0
+    local result=${doubled:cursor_position:LENGTH}
+    ((cursor_position = cursor_position + 1))
+    if (( cursor_position >= paddedLength )); then
+        cursor_position=0
     fi
     result=$(pad_string "$result" $LENGTH)
     printf -v "$out_var" "%s" "$result"
@@ -59,28 +59,28 @@ scroll() {
 
 while :
 do
-    trackText=$(getTrackName)
+    track_text=$(get_track_name)
 
-    scrolledText=''
-    middleIcon=''
-    playerStatus=$(getPlayerStatus)
+    scrolled_text=''
+    middle_icon=''
+    player_status=$(get_player_status)
 
-    if [[ "$playerStatus" == "Paused" ]]; then
-        middleIcon="%{A:playerctl play:}$PLAY_ICON%{A}"
-        cursorPosition=0
+    if [[ "$player_status" == "Paused" ]]; then
+        middle_icon="%{A:playerctl play:}$PLAY_ICON%{A}"
+        cursor_position=0
     else 
-        middleIcon="%{A:playerctl pause:}$PAUSE_ICON%{A}"
-        if ((cursorPosition == 0)); then
+        middle_icon="%{A:playerctl pause:}$PAUSE_ICON%{A}"
+        if ((cursor_position == 0)); then
             sleep $SLEEP_ON_START
         fi
     fi
 
-    scroll "$trackText" "scrolledText"
+    scroll "$track_text" "scrolled_text"
 
     prev="%{A:playerctl previous:}$PREV_ICON%{A}"
     next="%{A:playerctl next:}$NEXT_ICON%{A}"
 
-    echo "$scrolledText | $prev $middleIcon $next"
+    echo "$scrolled_text | $prev $middle_icon $next"
 
     sleep $SLEEP_ON_SCROLL
 done
