@@ -6,7 +6,19 @@ Features:
 - Scrollable text for displaying track metadata
 - Clickable control buttons
 - Customizable output format
-  
+
+## Demo
+
+Scrolling demo:
+
+<img src="https://gist.githubusercontent.com/imbalet/0182832f565b3ebcd169e5d998a68ed5/raw/aead4d156cfdd06158152479444eb481c1857f95/scroll.gif" alt="gif" height=80px>
+
+
+Audio control demo:
+
+<img src="https://gist.githubusercontent.com/imbalet/0182832f565b3ebcd169e5d998a68ed5/raw/78acdeda9fc24fdff4e27c188079a7e359b00375/click.gif" alt="gif" height=80px>
+
+
 ## Dependencies
 
 - [playerctl](https://github.com/altdesktop/playerctl)
@@ -19,7 +31,7 @@ Features:
 1. Clone the repo:
 
    ```bash
-   git clone <repository-url>
+   git clone https://github.com/imbalet/polybar-playing-track
    ```
 
    Or download the script directly:
