@@ -16,8 +16,17 @@ readonly PAUSE_ICON=${PAUSE_ICON:-"‖"}
 readonly NEXT_ICON=${NEXT_ICON:-"»"}
 readonly PREV_ICON=${PREV_ICON:-"«"}
 
+readonly PLAY_BUTTON=${PLAY_BUTTON:-"%{A:playerctl play:}$PLAY_ICON%{A}"}
+readonly PAUSE_BUTTON=${PAUSE_BUTTON:-"%{A:playerctl pause:}$PAUSE_ICON%{A}"}
+readonly NEXT_BUTTON=${NEXT_BUTTON:-"%{A:playerctl next:}$NEXT_ICON%{A}"}
+readonly PREV_BUTTON=${PREV_BUTTON:-"%{A:playerctl previous:}$PREV_ICON%{A}"}
+
+readonly SCROLL_PADDING=${SCROLL_PADDING:-'    '}
+
+middle_icon=$PLAY_BUTTON
 cursor_position=0
 track_text=''
+padding=''
 
 get_track_name() {
     playerctl metadata --format '{{ artist }} - {{ title }}' 2>/dev/null || echo "No players found"
@@ -43,22 +52,18 @@ scroll() {
         printf -v "$out_var" "%s" "$text"
         return 0
     fi
-    local padding='    '
-    local padded="$text$padding"
-    local result="${padded}${padded}"
-    result="${result:cursor_position:LENGTH}"
-    cursor_position=$(( (cursor_position + 1) % ${#padded} ))
+    local double_text="${text}${SCROLL_PADDING}${text}${SCROLL_PADDING}"
+    result="${double_text:cursor_position:LENGTH}"
+    cursor_position=$(( (cursor_position + 1) % (text_length + ${#SCROLL_PADDING}) ))
     printf -v "$out_var" "%s" "$result"
 }
-
-
 
 print_output() {
     local output="$OUTPUT_FORMAT"
     output="${output//%track_metadata%/$scrolled_text}"
-    output="${output//%prev_icon%/$prev}"
+    output="${output//%prev_icon%/$PREV_BUTTON}"
     output="${output//%middle_icon%/$middle_icon}"
-    output="${output//%next_icon%/$next}"
+    output="${output//%next_icon%/$NEXT_BUTTON}"
     output="${output//%padding%/$padding}"
     echo "$output"
 }
@@ -73,27 +78,20 @@ do
         continue
     fi
     scrolled_text=''
-    middle_icon=''
     player_status=$(get_player_status)
 
     if [[ "$player_status" == "Paused" ]]; then
-        middle_icon="%{A:playerctl play:}$PLAY_ICON%{A}"
+        middle_icon="$PLAY_BUTTON"
         cursor_position=0
     else 
-        middle_icon="%{A:playerctl pause:}$PAUSE_ICON%{A}"
+        middle_icon="$PAUSE_BUTTON"
         if ((cursor_position == 1)); then
             sleep $SLEEP_ON_START
         fi
     fi
     scroll "$track_text" "scrolled_text"
     padding=$(get_padding "$scrolled_text" $LENGTH)
-
-    prev="%{A:playerctl previous:}$PREV_ICON%{A}"
-    next="%{A:playerctl next:}$NEXT_ICON%{A}"
-
+    
     print_output
-
     sleep $SLEEP_ON_SCROLL
-
-
 done
