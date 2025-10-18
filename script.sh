@@ -6,6 +6,7 @@ set -euo pipefail
 export LC_ALL=C.UTF-8
 
 readonly OUTPUT_FORMAT=${OUTPUT_FORMAT:-'%track_metadata% | %prev_icon% %middle_icon% %next_icon% | %padding%'}
+readonly EMPTY_OUTPUT_FORMAT=${EMPTY_OUTPUT_FORMAT:-'Not playing | %prev_icon% %middle_icon% %next_icon% | %padding%'}
 
 readonly LENGTH=${LENGTH:-30}
 readonly SLEEP_ON_START=${SLEEP_ON_START:-0.5}
@@ -22,6 +23,7 @@ readonly NEXT_BUTTON=${NEXT_BUTTON:-"%{A:playerctl next:}$NEXT_ICON%{A}"}
 readonly PREV_BUTTON=${PREV_BUTTON:-"%{A:playerctl previous:}$PREV_ICON%{A}"}
 
 readonly SCROLL_PADDING=${SCROLL_PADDING:-'    '}
+
 
 middle_icon=$PLAY_BUTTON
 cursor_position=0
@@ -59,7 +61,7 @@ scroll() {
 }
 
 print_output() {
-    local output="$OUTPUT_FORMAT"
+    local output="$1"
     output="${output//%track_metadata%/$scrolled_text}"
     output="${output//%prev_icon%/$PREV_BUTTON}"
     output="${output//%middle_icon%/$middle_icon}"
@@ -70,28 +72,30 @@ print_output() {
 
 while :
 do
-    track_text=$(get_track_name) 
-
-    if [[ "$track_text" == 'No players found' ]]; then
-        echo ' '
-        sleep $SLEEP_ON_SCROLL
-        continue
-    fi
     scrolled_text=''
+    output_format=''
+
+    track_text=$(get_track_name) 
     player_status=$(get_player_status)
 
-    if [[ "$player_status" == "Paused" ]]; then
-        middle_icon="$PLAY_BUTTON"
-        cursor_position=0
-    else 
-        middle_icon="$PAUSE_BUTTON"
-        if ((cursor_position == 1)); then
-            sleep $SLEEP_ON_START
+
+    if [[ "$track_text" == 'No players found' ]]; then
+        output_format="$EMPTY_OUTPUT_FORMAT"
+    else
+        if [[ "$player_status" == "Paused" ]]; then
+            middle_icon="$PLAY_BUTTON"
+            cursor_position=0
+        else 
+            middle_icon="$PAUSE_BUTTON"
+            if ((cursor_position == 1)); then
+                sleep $SLEEP_ON_START
+            fi
         fi
+        scroll "$track_text" "scrolled_text"
+        output_format="$OUTPUT_FORMAT"
     fi
-    scroll "$track_text" "scrolled_text"
+
     padding=$(get_padding "$scrolled_text" $LENGTH)
-    
-    print_output
+    print_output "$output_format"
     sleep $SLEEP_ON_SCROLL
 done

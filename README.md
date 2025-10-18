@@ -102,6 +102,9 @@ Use spaces or custom characters to create visual spacing during the scroll loop.
 `OUTPUT_FORMAT` - default `'%scrolled_text% | %prev% %middle_icon% %next% | %padding%'`  
 String for formatting the output.
 
+`EMPTY_OUTPUT_FORMAT` - default `'Not playing | %prev_icon% %middle_icon% %next_icon% | %padding%'`  
+String for formatting the empty output. 
+
 `PLAY_BUTTON` - default `"%{A:playerctl play:}$PLAY_ICON%{A}"`  
 `PAUSE_BUTTON` - default `"%{A:playerctl pause:}$PAUSE_ICON%{A}"`  
 `NEXT_BUTTON` - default `"%{A:playerctl next:}$NEXT_ICON%{A}"`  
