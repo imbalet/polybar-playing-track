@@ -72,44 +72,64 @@ tail = true
 
 ## Config
 
-You can set up script variables to configure output:
+You can set these variables on starting to configure script parameters:
+```ini
+exec = "LENGTH=40 SLEEP_ON_SCROLL=0.2 bash /path/to/script.sh"
+```
 
-`LENGTH` - default `30`  
+Available parameters:
+
+`LENGTH`  
+default `30`  
 Maximum length (in characters) of track metadata to display. If the length of track metadata exceeds this limit, scrolling will be enabled.
 
-`SLEEP_ON_SCROLL` - default `0.15`  
+`SLEEP_ON_SCROLL`  
+default `0.15`  
 Time in seconds per symbol during scrolling.
 
-`SLEEP_ON_START` - default `0.5`  
+`SLEEP_ON_START`  
+default `0.5`  
 Additional delay in seconds when the scroll reaches the beginning of the metadata text. The final delay is `SLEEP_ON_START + SLEEP_ON_SCROLL`
 
-`PLAY_ICON` - default `▶`  
+`PLAY_ICON`  
+default `▶`  
 Symbol for the play button.
 
-`PAUSE_ICON` - default `‖`  
+`PAUSE_ICON`  
+default `‖`  
 Symbol for the pause button.
 
-`NEXT_ICON` - default `»`  
+`NEXT_ICON`  
+default `»`  
 Symbol for the next track button.
 
-`PREV_ICON` - default `«`  
+`PREV_ICON`  
+default `«`  
 Symbol for the previous track button.
 
-`SCROLL_PADDING` - default `    `  
+`SCROLL_PADDING`  
+default `    `  
 Separator text displayed between the end and start of scrolling text.
-Use spaces or custom characters to create visual spacing during the scroll loop.
+Use spaces or custom characters to create visual separation between the end and start of the scrolling text.
 
-`OUTPUT_FORMAT` - default `'%scrolled_text% | %prev% %middle_icon% %next% | %padding%'`  
+`OUTPUT_FORMAT`  
+default `'%scrolled_text% | %prev% %middle_icon% %next% | %padding%'`  
 String for formatting the output.
 
-`EMPTY_OUTPUT_FORMAT` - default `'Not playing | %prev_icon% %middle_icon% %next_icon% | %padding%'`  
+`EMPTY_OUTPUT_FORMAT`  
+default `'Not playing | %prev_icon% %middle_icon% %next_icon% | %padding%'`  
 String for formatting the empty output. 
 
-`PLAY_BUTTON` - default `"%{A:playerctl play:}$PLAY_ICON%{A}"`  
-`PAUSE_BUTTON` - default `"%{A:playerctl pause:}$PAUSE_ICON%{A}"`  
-`NEXT_BUTTON` - default `"%{A:playerctl next:}$NEXT_ICON%{A}"`  
-`PREV_BUTTON` - default `"%{A:playerctl previous:}$PREV_ICON%{A}"`  
+`PLAY_BUTTON`  
+default `"%{A:playerctl play:}$PLAY_ICON%{A}"`  
+`PAUSE_BUTTON`  
+default `"%{A:playerctl pause:}$PAUSE_ICON%{A}"`  
+`NEXT_BUTTON`  
+default `"%{A:playerctl next:}$NEXT_ICON%{A}"`  
+`PREV_BUTTON`  
+default `"%{A:playerctl previous:}$PREV_ICON%{A}"`  
 Low-level control for the button text. Can be used to set up custom click action. `$PLAY_ICON`, `$PAUSE_ICON`, `$NEXT_ICON`, `$PREV_ICON` can be used inside these button definitions.  
+
 
 You can specify custom actions using polybar formatting. Example:
 ```
@@ -117,11 +137,6 @@ You can specify custom actions using polybar formatting. Example:
 ```
 Learn more about polybar formatting in the wiki: [Formatting](https://github.com/polybar/polybar/wiki/Formatting).
 
-
-You can set these variables on starting the script:
-```ini
-"LENGTH=40 SLEEP_ON_SCROLL=0.2 bash /path/to/script.sh"
-```
 
 ## Formatting
 
