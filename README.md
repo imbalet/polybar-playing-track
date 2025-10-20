@@ -19,6 +19,18 @@ Audio control demo:
 
 <img src="https://gist.githubusercontent.com/imbalet/0182832f565b3ebcd169e5d998a68ed5/raw/78acdeda9fc24fdff4e27c188079a7e359b00375/click.gif" alt="gif" height=80px>
 
+Config:
+
+```ini
+[module/track]
+type = custom/script
+tail = true
+format = %{F#BD93F9}%{T3}<label>%{F-}
+exec = "OUTPUT_FORMAT='󰎇 %track_metadata%%padding% | %prev_icon% %middle_icon% %next_icon% |' LENGTH=40 PLAY_ICON= PAUSE_ICON= NEXT_ICON=󰒭 PREV_ICON=󰒮 bash /home/imbalet/repos/mine/polybar-playing-track/script.sh"
+click-right = "kill -USR1 %pid%"
+```
+
+The font `JetBrainsMono Nerd Font Propo` was used to display icons.
 
 ## Dependencies
 
