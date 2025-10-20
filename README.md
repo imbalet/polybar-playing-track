@@ -6,6 +6,7 @@ Features:
 - Scrollable text for displaying track metadata
 - Clickable control buttons
 - Customizable output format
+- Support for multiple sources
 
 ## Demo
 
@@ -68,7 +69,12 @@ Audio control demo:
 type = custom/script
 exec = "bash /path/to/script.sh"
 tail = true
+click-right = "kill -USR1 %pid%"
 ```
+
+## Changing source
+
+Changing sources is implemented via right-click on the module in the bar. You can specify your custom action, such as `click-(left|middle|right)` or `scroll-(up|down)`.
 
 ## Config
 
@@ -119,23 +125,6 @@ String for formatting the output.
 `EMPTY_OUTPUT_FORMAT`  
 default `'Not playing | %prev_icon% %middle_icon% %next_icon% | %padding%'`  
 String for formatting the empty output. 
-
-`PLAY_BUTTON`  
-default `"%{A:playerctl play:}$PLAY_ICON%{A}"`  
-`PAUSE_BUTTON`  
-default `"%{A:playerctl pause:}$PAUSE_ICON%{A}"`  
-`NEXT_BUTTON`  
-default `"%{A:playerctl next:}$NEXT_ICON%{A}"`  
-`PREV_BUTTON`  
-default `"%{A:playerctl previous:}$PREV_ICON%{A}"`  
-Low-level control for the button text. Can be used to set up custom click action. `$PLAY_ICON`, `$PAUSE_ICON`, `$NEXT_ICON`, `$PREV_ICON` can be used inside these button definitions.  
-
-
-You can specify custom actions using polybar formatting. Example:
-```
-%{A1:command:} clickable text %{A}
-```
-Learn more about polybar formatting in the wiki: [Formatting](https://github.com/polybar/polybar/wiki/Formatting).
 
 
 ## Formatting
